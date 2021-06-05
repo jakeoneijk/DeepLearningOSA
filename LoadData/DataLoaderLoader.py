@@ -4,8 +4,8 @@ import math
 
 from torch.utils.data import DataLoader
 
-from ..HParams import HParams
-from .DataSet import DataSet
+from HParams import HParams
+from LoadData.DataSet import DataSet
 
 class DataLoaderLoader():
     def __init__(self,h_params:HParams):
@@ -32,7 +32,7 @@ class DataLoaderLoader():
         total_valid_path_list = []
         total_test_path_list = []
         for data_name in self.h_params.data.name_list:
-            data_path = os.path.join(self.h_params.data.root_path,data_name+"/"+self.data.preprocess_data_path) 
+            data_path = os.path.join(self.h_params.data.root_path,data_name+"/"+self.h_params.data.preprocess_data_path) 
             train_path_list,valid_path_list,test_path_list = self.get_data_path(data_path)
             total_train_path_list = total_train_path_list + train_path_list
             total_valid_path_list = total_valid_path_list + valid_path_list

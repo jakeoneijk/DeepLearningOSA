@@ -1,4 +1,6 @@
+import torch
 from HParams import HParams
+
 class TestModelIO():
     def __init__(self,h_params:HParams):
         self.test_model = None

@@ -17,7 +17,7 @@ class TrainState(Enum):
     TEST = "test"
  
 class Trainer(ABC):
-    def __init__(self,h_params:HParams,seed: int = None):
+    def __init__(self,h_params:HParams):
         self.h_params = h_params
 
         self.set_model()
@@ -32,7 +32,8 @@ class Trainer(ABC):
         self.valid_data_loader = None
         self.test_data_loader = None
 
-        self.seed = torch.cuda.initial_seed() if seed is None else seed
+        self.seed = (int)(torch.cuda.initial_seed() / (2**32)) if self.h_params.train.seed is None else self.h_params.train.seed
+        
         self.set_seeds(self.h_params.train.seed_strict)
 
         self.check_point_num = 0 #binary

@@ -6,7 +6,7 @@ import pickle
 class LogWriter():
     def __init__(self,h_params:HParams):
         self.h_params = h_params
-        self.log_name = self.h_params.log.log_path+"_"+self.h_params.mode.experiment_name + "/log.txt"
+        self.log_name = self.h_params.log.log_path + "/log.txt"
         self.tensorboard_writer = SummaryWriter(log_dir=self.h_params.log.tensorboard_path)
         self.h_params_log()
 

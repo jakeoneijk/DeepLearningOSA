@@ -1,25 +1,59 @@
 import numpy as np
 import torch
+from abc import ABC, abstractmethod
 
 from HParams import HParams
 
-class Tester():
+class Tester(ABC):
     def __init__(self,h_params:HParams):
-        self.h_params = h_params
+        self.h_params:HParams = h_params
         self.device = h_params.resource.device
         self.model = None
+    '''
+    ==============================================================
+    abstract method start
+    ==============================================================
+    '''
+    @abstractmethod
+    def set_model(self):
+        '''
+        set self.model
+        '''
+        raise NotImplementedError
+    
+    @abstractmethod
+    def set_output_path(self):
+        '''
+        set self.output_path
+        '''
+        raise NotImplementedError
+
+    @abstractmethod
+    def read_input(self,input_path):
+        pass
+
+    @abstractmethod
+    def make_output(self,batch_input):
+        pass
+
+    @abstractmethod
+    def post_processing(self,model_output):
+        pass
+    
+    '''
+    ==============================================================
+    abstract method end
+    ==============================================================
+    '''
 
     def test_one_sample(self,input_path):
+        self.set_model()
         self.set_output_path()
         input = self.read_input(input_path)
         self.pretrained_load("")
         batch_input = self.make_batch(input)
         output = self.make_output(batch_input)
         self.post_processing(output)
-
-    
-    def set_output_path(self):
-        pass
 
     def pretrained_load(self,pretrain_path):
         best_model_load = torch.load(pretrain_path,map_location='cpu')
@@ -58,10 +92,4 @@ class Tester():
         for i in range(0,numpy_batch.shape[0]):
             unzip_data = numpy_batch[i] if unzip_data is None else np.concatenate((unzip_data,numpy_batch[i]),axis=-1)
         return unzip_data
-    
-    def make_output(self,batch_input):
-        pass
-    
-    def post_processing(self,model_output):
-        pass
     

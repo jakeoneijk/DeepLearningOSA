@@ -1,6 +1,4 @@
 import os
-import sys
-sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from LogWriter import LogWriter
 from HParams import HParams
 from abc import ABC, abstractmethod
@@ -226,11 +224,11 @@ class Trainer(ABC):
 
         return initialized_metric
 
-    def save_module(self,name,prefix=''):
+    def save_module(self,name="load",prefix='model'):
         path = os.path.join(self.h_params.log.model_save_path,f'{prefix}_{name}.pth')
         torch.save(self.model.state_dict(), path)
-    
-    def load_module(self,name,prefix=''):
+
+    def load_module(self,name="load",prefix='model'):
         path = os.path.join(self.h_params.log.model_save_path,f'{prefix}_{name}.pth')
         best_model_load = torch.load(path)
         self.model.load_state_dict(best_model_load)

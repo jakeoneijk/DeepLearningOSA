@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import torch
 from abc import ABC, abstractmethod
@@ -50,8 +51,8 @@ class Tester(ABC):
         self.set_model()
         self.set_output_path()
         input = self.read_input(input_path)
-        self.pretrained_load("")
-        batch_input = self.make_batch(input)
+        self.pretrained_load(os.path.join(self.h_params.test.pretrain_path,self.h_params.test.pretrain_dir_name)+"/model_load.pth")
+        batch_input = self.make_batch(input,self.h_params.test.seg_time_length)
         output = self.make_output(batch_input)
         self.post_processing(output)
 

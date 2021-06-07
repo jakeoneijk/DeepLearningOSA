@@ -110,6 +110,7 @@ class Logging():
 
 @dataclass
 class Test():
+    seg_time_length:int
     test_type = ["one","set"][1]
     test_set_list_path = './test_song_list.txt'
     data_type = ''

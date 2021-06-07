@@ -1,4 +1,3 @@
-import os
 import torch.utils.data.dataset as dataset
 import pickle
 

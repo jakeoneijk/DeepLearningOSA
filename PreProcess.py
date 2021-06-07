@@ -28,7 +28,7 @@ class PreProcess():
         
         test_song_list = open(self.h_params.data.root_path + "/" + data_name+"_test_data_list.txt", 'r').read().split('\n')
         
-        for meta_data in enumerate(path_list):
+        for meta_data in path_list:
             if meta_data['name'] in test_song_list:
                 test_meta_path_list.append(meta_data)
             else:

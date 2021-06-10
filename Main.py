@@ -2,6 +2,7 @@ import os
 import pickle
 
 from HParams import HParams
+from MakeMetaData.MakeMetaData import MakeMetaData
 from PreProcess import PreProcess
 from TestModelIO import TestModelIO
 from LoadData.DataLoaderLoader import DataLoaderLoader
@@ -19,8 +20,8 @@ class Controller():
         print(f"{self.h_params.mode.app} start")
         print("=============================================")
         
-        if self.h_params.mode.app == "make_data":
-            self.make_data()
+        if self.h_params.mode.app == "make_meta_data":
+            self.make_meta_data()
 
         if self.h_params.mode.app == "preprocess":
             self.preprocess()
@@ -39,10 +40,13 @@ class Controller():
         
         print("finish app")
 
-    def make_data(self):
-        pass
+    def make_meta_data(self):
+        meta_data_maker = MakeMetaData(self.h_params)
+        for data_name in self.h_params.data.name_list:
+            meta_data_maker.make_meta_data(data_name)
 
     def preprocess(self):
+        preprocessor = PreProcess(self.h_params)
         for data_name in self.h_params.data.name_list:
             data_output_root = os.path.join(self.h_params.data.root_path,data_name) + "/Preprocessed"
             data_root = self.h_params.data.original_data_path + "/"+data_name

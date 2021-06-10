@@ -8,6 +8,15 @@ class PreProcess():
     def __init__(self,h_params:HParams):
         self.h_params = h_params
         self.util = Util(h_params)
+        self.data_log = dict()
+        self.data_log_init()
+
+    def data_log_init(self):
+        self.data_log["train data num"] = 0
+        self.data_log["test data num"] = 0
+
+        self.data_log["train data time_dim_num"] = 0
+        self.data_log["test data time_dim_num"] = 0
     
     def preprocess_data(self,data_name,output_path):
         meta_data_list = self.get_train_test_meta_data_list(data_name)
@@ -15,8 +24,14 @@ class PreProcess():
         for data_type in meta_data_list:
 
             for i,meta_data in enumerate(meta_data_list[data_type]):
+                self.data_log[f"{data_type} data num"] += 1
                 print(f"preprocess {meta_data['name']} {data_type} data {i+1}/{len(meta_data_list[data_type])}")
-    
+        
+        file = open(f"{output_path}/data_info.txt",'a')
+        for data_name in self.data_log:
+            file.write(f"{data_name} : {self.data_log[data_name]}"+'\n')
+        file.close()
+        
     def get_train_test_meta_data_list(self,data_name):
         train_meta_data_list = []
         test_meta_path_list = []

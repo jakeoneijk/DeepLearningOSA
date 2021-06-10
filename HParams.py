@@ -4,7 +4,8 @@ import os
 import torch
 from dataclasses import dataclass
 from datetime import datetime
-time_for_output = datetime.now().strftime('%y%m%d-%H%M%S') + "_"
+
+time_for_output = datetime.now().strftime('%y%m%d-%H%M%S')
 
 class HParams(object):
     def __init__(self):
@@ -58,7 +59,7 @@ class HParams(object):
 @dataclass
 class Mode:
     experiment_name:str = "base_line"
-    app = ["make_data", "preprocess", "test_model_io", "train", "test", "evaluate"][0]
+    app = ["make_meta_data", "preprocess", "test_model_io", "train", "test", "evaluate"][0]
     train:str = ["start","resume"][0]
     debug_mode:bool = True
 

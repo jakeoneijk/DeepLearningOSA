@@ -41,10 +41,8 @@ class PreProcess():
         with open(path_list_path,'rb') as file_reader:
             path_list = pickle.load(file_reader)
         
-        test_song_list = open(self.h_params.data.root_path + "/" + data_name+"_test_data_list.txt", 'r').read().split('\n')
-        
         for meta_data in path_list:
-            if meta_data['name'] in test_song_list:
+            if meta_data['data_type'] == "test":
                 test_meta_path_list.append(meta_data)
             else:
                 train_meta_data_list.append(meta_data)

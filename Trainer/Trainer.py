@@ -1,5 +1,5 @@
 import os
-from LogWriter import LogWriter
+from Trainer.LogWriter import LogWriter
 from HParams import HParams
 from abc import ABC, abstractmethod
 from enum import Enum,unique

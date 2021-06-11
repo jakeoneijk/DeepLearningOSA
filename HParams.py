@@ -56,6 +56,10 @@ class HParams(object):
         os.makedirs(self.test.pretrain_path,exist_ok=True)
         os.makedirs(self.test.output_path,exist_ok=True)
 
+##########################################################################################
+# Data class
+##########################################################################################
+
 @dataclass
 class Mode:
     experiment_name:str = "base_line"

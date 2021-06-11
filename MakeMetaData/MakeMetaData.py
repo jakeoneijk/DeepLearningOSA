@@ -1,8 +1,8 @@
 from HParams import HParams
 
-from MakeMetaData.MakeSkMultiSingerMetaData import MakeSkMultiSingerMetaData
-from MakeMetaData.MakeIKalaMetaData import MakeIKalaMetaData
-from MakeMetaData.MakeMedlyDbVocalRawMix import MakeMedlyDbVocalRawMix
+from MakeMetaData.SingingVoice.MakeSkMultiSingerMetaData import MakeSkMultiSingerMetaData
+from MakeMetaData.SingingVoice.MakeIKalaMetaData import MakeIKalaMetaData
+from MakeMetaData.SingingVoice.MakeMedlyDbVocalRawMix import MakeMedlyDbVocalRawMix
 
 class MakeMetaData:
     def __init__(self,h_params:HParams):

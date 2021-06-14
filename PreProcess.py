@@ -64,3 +64,12 @@ class PreProcess():
             print(f'Saving: {save_path}')
             with open(save_path,'wb') as file_writer:
                 pickle.dump(segment_feature_dict,file_writer)
+    
+    def dict_dim_size_consistency_check(self,input_dict:dict,dim_axis=-1):
+        dim_size = None
+        for key in input_dict:
+            if dim_size is None:
+                dim_size = input_dict[key].shape[dim_axis]
+            else:
+                assert(dim_size == input_dict[key].shape[dim_axis]),"check time dim size of mel and stft"
+        return dim_size

@@ -10,10 +10,17 @@ from LoadData.DataLoaderLoader import DataLoaderLoader
 class Controller():
     def __init__(self):
         self.h_params:HParams = None
+        self.trainer = None
+        self.tester = None
+        self.set_experiment()
 
-    def set_hparams(self):
+    def set_hparams(self,h_params:HParams = None):
         #set hparams.
-        self.h_params = HParams()
+        self.h_params = HParams() if h_params is None else h_params
+    
+    def set_experiment(self):
+        #set model, trainer and tester
+        model = None
 
     def run(self):
         print("=============================================")
@@ -61,13 +68,12 @@ class Controller():
         """
         construct trainer here and fit
         """
-        trainer = None
-        trainer.set_data_loader(train_data_loader,valid_data_loader,test_data_loader)
-        trainer.fit()
+        self.trainer.set_data_loader(train_data_loader,valid_data_loader,test_data_loader)
+        self.trainer.fit()
 
     def test(self):
         with open(self.h_params.test.pretrain_path+"/"+self.h_params.test.pretrain_dir_name+"/h_params.pkl",'rb') as pickle_file:
-            h_params_of_pretrained = pickle.load(pickle_file)
+            h_params_of_pretrained:HParams = pickle.load(pickle_file)
         self.h_params.model = h_params_of_pretrained.model
         self.h_params.preprocess = h_params_of_pretrained.preprocess
         pass

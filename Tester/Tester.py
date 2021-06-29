@@ -6,21 +6,15 @@ from abc import ABC, abstractmethod
 from HParams import HParams
 
 class Tester(ABC):
-    def __init__(self,h_params:HParams):
+    def __init__(self,model,h_params:HParams):
         self.h_params:HParams = h_params
         self.device = h_params.resource.device
-        self.model = None
+        self.model = model
     '''
     ==============================================================
     abstract method start
     ==============================================================
     '''
-    @abstractmethod
-    def set_model(self):
-        '''
-        set self.model
-        '''
-        raise NotImplementedError
     
     @abstractmethod
     def set_output_path(self):
@@ -48,7 +42,6 @@ class Tester(ABC):
     '''
 
     def test_one_sample(self,input_path):
-        self.set_model()
         self.set_output_path()
         input = self.read_input(input_path)
         self.pretrained_load(os.path.join(self.h_params.test.pretrain_path,self.h_params.test.pretrain_dir_name)+"/model_load.pth")

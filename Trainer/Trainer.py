@@ -15,10 +15,10 @@ class TrainState(Enum):
     TEST = "test"
  
 class Trainer(ABC):
-    def __init__(self,h_params:HParams):
+    def __init__(self,model,h_params:HParams):
         self.h_params = h_params
 
-        self.set_model()
+        self.model = model.to(h_params.resource.device)
         self.set_optimizer()
         self.criteria = {}
         self.set_criteria()
@@ -51,12 +51,6 @@ class Trainer(ABC):
     abstract method start
     ==============================================================
     '''
-    @abstractmethod
-    def set_model(self):
-        '''
-        set self.model
-        '''
-        raise NotImplementedError
 
     @abstractmethod
     def set_criteria(self):

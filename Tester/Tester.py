@@ -72,6 +72,8 @@ class Tester(ABC):
             end_idx = start_idx + segment_size
 
             for feature in input:
+                if type(input[feature]) not in [list,np.ndarray]:
+                    continue
                 feature_seg = input[feature][...,start_idx:end_idx]
             
                 if feature_seg.shape[-1] != segment_size:

@@ -1,6 +1,6 @@
 import os
 import pickle
-
+import numpy as np
 from HParams import HParams
 from Util import Util
 
@@ -19,6 +19,7 @@ class PreProcess():
         self.data_log["test data time_dim_num"] = 0
     
     def preprocess_data(self,data_name,output_path):
+        self.data_log_init()
         meta_data_list = self.get_train_test_meta_data_list(data_name)
         
         for data_type in meta_data_list:
@@ -55,6 +56,8 @@ class PreProcess():
             segment_feature_dict = dict()
 
             for feature_name in feature_dict:
+                if type(feature_dict[feature_name]) not in [list,np.ndarray]:
+                    continue
                 segment_feature_dict[feature_name] = feature_dict[feature_name][...,start_idx:end_idx]
             
             if segment_feature_dict[list(segment_feature_dict.keys())[0]].shape[-1] != segment_size:

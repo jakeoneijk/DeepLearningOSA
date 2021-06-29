@@ -21,6 +21,8 @@ class Controller():
     def set_experiment(self):
         #set model, trainer and tester
         model = None
+        self.trainer = None
+        self.tester = None
 
     def run(self):
         print("=============================================")

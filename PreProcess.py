@@ -23,15 +23,29 @@ class PreProcess():
     
     def feature_min_max_log(self,feature_dict):
         for feature_name in feature_dict:
-            if type(feature_dict[feature_name]) not in [list,np.ndarray]:
-                    continue
+
+            if type(feature_dict[feature_name]) not in [int,list,np.ndarray]:
+                continue
+
             if feature_name not in self.data_log["train feature min max"]:
                 self.data_log["train feature min max"][feature_name] = {"min": np.inf, "max": -np.inf}
+            
+            new_min = feature_dict[feature_name]
+            new_max = feature_dict[feature_name]
+
+            if type(feature_dict[feature_name]) == np.ndarray:
+                new_min = np.min(feature_dict[feature_name]).item()
+                new_max = np.max(feature_dict[feature_name]).item()
+            elif type(feature_dict[feature_name]) == list:
+                new_min = np.min(np.array(feature_dict[feature_name])).item()
+                new_max = np.max(np.array(feature_dict[feature_name])).item()
+
+
             self.data_log["train feature min max"][feature_name]["min"] = min(self.data_log["train feature min max"][feature_name]["min"],
-                                                                        np.min(feature_dict[feature_name]).item())
+                                                                        new_min)
             self.data_log["train feature min max"][feature_name]["max"] = max(self.data_log["train feature min max"][feature_name]["max"],
-                                                                        np.max(feature_dict[feature_name]).item())
-        
+                                                                        new_max)
+    
     def preprocess_data(self,data_name):
         data_path = os.path.join(self.h_params.data.root_path,data_name)
         self.data_log_init(data_path)
@@ -68,10 +82,6 @@ class PreProcess():
         preprocessed_path = f"{output_path}/{meta_data['data_type']}/{meta_data['name']}"
         os.makedirs(preprocessed_path)
         for feature_name in feature_dict:
-
-            if type(feature_dict[feature_name]) not in [list,np.ndarray]:
-                continue
-
             save_path = os.path.join(preprocessed_path,f'{feature_name}.pkl')
             print(f'Saving: {save_path}')
             with open(save_path,'wb') as file_writer:

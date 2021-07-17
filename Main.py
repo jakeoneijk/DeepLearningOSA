@@ -12,13 +12,13 @@ class Controller():
         self.h_params:HParams = None
         self.trainer = None
         self.tester = None
-        self.set_experiment()
-
-    def set_hparams(self,h_params:HParams = None):
+        
+    def set_experiment(self,h_params:HParams = None):
         #set hparams.
         self.h_params = HParams() if h_params is None else h_params
+        self.set_experiment_module()
     
-    def set_experiment(self):
+    def set_experiment_module(self):
         #set model, trainer and tester
         self.model = None
         self.trainer = None
@@ -60,7 +60,7 @@ class Controller():
             preprocessor.preprocess_data(data_name)
     
     def test_model_io(self):
-        test_moder_io = TestModelIO(self.model,self.h_params)
+        test_moder_io = TestModelIO(self.model.cpu(),self.h_params)
         test_moder_io.test()
 
     def train(self):
@@ -84,5 +84,5 @@ class Controller():
 
 if __name__ == '__main__':
     controller = Controller()
-    controller.set_hparams()
+    controller.set_experiment()
     controller.run()

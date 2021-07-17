@@ -49,22 +49,23 @@ class DataLoaderLoader():
         
         return total_train_path_list, total_valid_path_list, total_test_path_list
     
-    def get_data_path(self,data_path,make_valid_set = True):
-        total_train_file_list = [os.path.join(data_path+"/train",fname) for fname in os.listdir(data_path+"/train")]
-        test_file_list = [os.path.join(data_path+"/test",fname) for fname in os.listdir(data_path+"/test")]
+    def get_data_path(self,data_path,make_valid_set_from_train = False):
+        total_train_data_list = [os.path.join(data_path+"/train",fname) for fname in os.listdir(data_path+"/train")]
+        test_data_list = [os.path.join(data_path+"/test",fname) for fname in os.listdir(data_path+"/test")]
         
-        if make_valid_set == False:
-            return total_train_file_list,test_file_list,test_file_list
+        if make_valid_set_from_train == False:
+            valid_data_list = [os.path.join(data_path+"/valid",fname) for fname in os.listdir(data_path+"/valid")]
+            return total_train_data_list,valid_data_list,test_data_list
         
         #divide train and valid
-        num_total_train_data = len(total_train_file_list)
+        num_total_train_data = len(total_train_data_list)
         total_indices = list(range(num_total_train_data))
         random.shuffle(total_indices)
         num_train_set = math.floor(num_total_train_data * (1-self.h_params.data.valid_ratio))
         train_idx = total_indices[:num_train_set]
         valid_idx = total_indices[num_train_set:]
 
-        train_file_list = [total_train_file_list[i] for i in train_idx]
-        valid_file_list = [total_train_file_list[i] for i in valid_idx]
+        train_data_list = [total_train_data_list[i] for i in train_idx]
+        valid_data_list = [total_train_data_list[i] for i in valid_idx]
 
-        return train_file_list,valid_file_list,test_file_list
+        return train_data_list,valid_data_list,test_data_list

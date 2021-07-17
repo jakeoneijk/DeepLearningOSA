@@ -11,12 +11,15 @@ class DataLoaderLoader():
     def __init__(self,h_params:HParams):
         self.h_params = h_params
     
+    def get_data_set(self,path_list):
+        return DataSet(path_list)
+    
     def get_data_loader(self):
         train_path_list,valid_path_list,test_path_list = self.get_data_path_list()
 
-        train_data_set = DataSet(train_path_list)
-        valid_data_set = DataSet(valid_path_list)
-        test_data_set = DataSet(test_path_list)
+        train_data_set = self.get_data_set(train_path_list)
+        valid_data_set = self.get_data_set(valid_path_list)
+        test_data_set = self.get_data_set(test_path_list)
 
         train_data_loader = DataLoader(train_data_set,pin_memory=True,batch_size=self.h_params.train.batch_size, 
         shuffle=True, num_workers=self.h_params.resource.num_workers, drop_last=True)

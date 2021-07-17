@@ -1,6 +1,5 @@
 # base line config
-name: 
-- 'base line'
+mode:
+  experiment_name: 'base line'
 
-#[data class variable]~[variable]: value
-#example) preprocess~sample_rate: 22050
+#data class variable: variable: value

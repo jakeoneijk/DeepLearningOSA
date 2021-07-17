@@ -88,4 +88,3 @@ class Tester(ABC):
         for i in range(0,numpy_batch.shape[0]):
             unzip_data = numpy_batch[i] if unzip_data is None else np.concatenate((unzip_data,numpy_batch[i]),axis=-1)
         return unzip_data
-    

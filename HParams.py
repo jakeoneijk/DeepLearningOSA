@@ -26,26 +26,16 @@ class HParams(object):
         if self.config.path is None:
             return
         yaml_file = open(self.config.path, 'r')
-        yaml_dict = yaml.safe_load(yaml_file)
+        config_dict = yaml.safe_load(yaml_file)
         
-        for key in yaml_dict:
-            data_class_and_vars_name = key.split("~")
-            if len(data_class_and_vars_name) <= 1:
-                continue
-            data_class_name = data_class_and_vars_name[0]
-            vars_name = data_class_and_vars_name[1]
-            setattr(getattr(self,data_class_name),vars_name,yaml_dict[key])
+        for data_class_name in config_dict:
+            for var_name in config_dict[data_class_name]:
+                setattr(getattr(self,data_class_name),var_name,config_dict[data_class_name][var_name])
 
-        self.config.config = yaml_dict
+        self.config.config = config_dict
 
     def make_essential_dir(self):
         os.makedirs(self.data.root_path,exist_ok=True)
-        for data_name in self.data.name_list:
-            data_path = os.path.join(self.data.root_path,data_name)
-            os.makedirs(data_path,exist_ok=True)
-            os.makedirs(data_path+"/"+self.data.preprocess_data_path,exist_ok=True)
-            os.makedirs(data_path+"/"+self.data.preprocess_data_path+"/train",exist_ok=True)
-            os.makedirs(data_path+"/"+self.data.preprocess_data_path+"/test",exist_ok=True)
 
         if self.mode.app == "train":
             os.makedirs(self.log.log_root_path,exist_ok=True)
@@ -63,7 +53,7 @@ class HParams(object):
 @dataclass
 class Mode:
     experiment_name:str = "base_line"
-    app = ["make_meta_data", "preprocess", "test_model_io", "train", "test", "evaluate"][0]
+    app = ["make_meta_data", "preprocess", "test_model_io", "train", "test", "evaluate"][1]
     train:str = ["start","resume"][0]
     debug_mode:bool = True
 
@@ -74,12 +64,11 @@ class Resource:
 
 @dataclass
 class Data:
-    valid_ratio = 0.1
     original_data_path = "../210101_data"
     root_path = "./Data"
     name_list = []
     preprocess_data_path = "Preprocessed"
-    #data1: str = 'sk_multi_singer'
+    #data1: str = 'musdb_main_vocal'
     #name_list.append(data1)
 
 @dataclass
@@ -89,7 +78,7 @@ class Config:
 
 @dataclass
 class PreProcess:
-    sample_rate:int = 44100
+    pass
 
 @dataclass
 class Model:
@@ -101,8 +90,10 @@ class Train:
     seed = (int)(torch.cuda.initial_seed() / (2**32))
     batch_size:int = 16
     lr:int = 0.001
+    lr_decay:float = 0.98
+    lr_decay_step:float = 1.0E+3
     epoch:int = 1000
-
+    
 @dataclass
 class Logging():
     log_root_path = "./Log"
@@ -115,9 +106,8 @@ class Logging():
 
 @dataclass
 class Test():
-    seg_time_length:int
+    seg_time_length:int = 0
     test_type = ["one","set"][1]
-    test_set_list_path = './test_song_list.txt'
     data_type = ''
     input_path = "./TestInput"
     input_file_name = ""

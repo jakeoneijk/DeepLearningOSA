@@ -20,7 +20,7 @@ class Controller():
     
     def set_experiment(self):
         #set model, trainer and tester
-        model = None
+        self.model = None
         self.trainer = None
         self.tester = None
 
@@ -57,11 +57,10 @@ class Controller():
     def preprocess(self):
         preprocessor = PreProcess(self.h_params)
         for data_name in self.h_params.data.name_list:
-            data_output_root = os.path.join(self.h_params.data.root_path,data_name) + "/Preprocessed"
-            data_root = self.h_params.data.original_data_path + "/"+data_name
+            preprocessor.preprocess_data(data_name)
     
     def test_model_io(self):
-        test_moder_io = TestModelIO(self.h_params)
+        test_moder_io = TestModelIO(self.model,self.h_params)
         test_moder_io.test()
 
     def train(self):

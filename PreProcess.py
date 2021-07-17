@@ -28,9 +28,9 @@ class PreProcess():
             if feature_name not in self.data_log["train feature min max"]:
                 self.data_log["train feature min max"][feature_name] = {"min": np.inf, "max": -np.inf}
             self.data_log["train feature min max"][feature_name]["min"] = min(self.data_log["train feature min max"][feature_name]["min"],
-                                                                        np.min(feature_dict[feature_name]))
+                                                                        np.min(feature_dict[feature_name]).item())
             self.data_log["train feature min max"][feature_name]["max"] = max(self.data_log["train feature min max"][feature_name]["max"],
-                                                                        np.max(feature_dict[feature_name]))
+                                                                        np.max(feature_dict[feature_name]).item())
         
     def preprocess_data(self,data_name):
         data_path = os.path.join(self.h_params.data.root_path,data_name)
@@ -53,7 +53,7 @@ class PreProcess():
             if meta_data["data_type"] == "train":
                 self.feature_min_max_log(feature_dict)
                 
-        with open(f"{data_path}/{self.preprocessed_folder_name}/data_info.txt",'w') as file:
+        with open(f"{data_path}/{self.preprocessed_folder_name}/data_info.yaml",'w') as file:
             yaml.dump(self.data_log, file)
     
         

@@ -21,8 +21,10 @@ class Controller():
     def set_experiment_module(self):
         #set model, trainer and tester
         self.model = None
-        self.trainer = None
-        self.tester = None
+        if self.h_params.mode.app == "train":
+            self.trainer = None
+        elif self.h_params.mode.app == "test":
+            self.tester = None
 
     def run(self):
         print("=============================================")
@@ -77,7 +79,8 @@ class Controller():
             h_params_of_pretrained:HParams = pickle.load(pickle_file)
         self.h_params.model = h_params_of_pretrained.model
         self.h_params.preprocess = h_params_of_pretrained.preprocess
-        pass
+        for data_name in self.h_params.data.name_list:
+            self.tester.test_test_set(data_name)
 
     def evaluate(self):
         pass

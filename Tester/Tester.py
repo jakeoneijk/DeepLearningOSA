@@ -24,13 +24,14 @@ class Tester(ABC):
     '''
 
     @abstractmethod
-    def read_input(self,meta_data,data_name):
+    def read_test_data(self,meta_data,data_name):
         '''
+        mus be included {"model_input":input feature ,"seg_dim_size": }
         '''
         pass
 
     @abstractmethod
-    def post_processing(self,model_output,original_seg_dim_size):
+    def post_processing(self,model_output,test_data):
         pass
     
     '''
@@ -47,10 +48,10 @@ class Tester(ABC):
 
     def test_one_sample(self,meta_data,data_name):
         self.set_output_path(meta_data=meta_data)
-        input,segment_dim_size = self.read_input(meta_data,data_name)
-        batch_input = self.make_batch(input,segment_dim_size,self.h_params.model.segment_size)
+        test_data = self.read_test_data(meta_data,data_name)
+        batch_input = self.make_batch(test_data["model_input"],test_data["seg_dim_size"],self.h_params.model.segment_size)
         output = self.make_output(batch_input)
-        self.post_processing(output,segment_dim_size)
+        self.post_processing(output,test_data)
 
     def pretrained_load(self,pretrain_path):
         best_model_load = torch.load(pretrain_path,map_location='cpu')

@@ -17,6 +17,7 @@ class HParams(object):
         self.train= Train()
         self.log = Logging()
         self.test = Test()
+        self.evaluate = Evaluate()
         self.config = Config()
         self.load_config()
 
@@ -115,3 +116,7 @@ class Test():
     output_path = "./TestOutput"
     pretrain_path = "./Pretrained"
     pretrain_dir_name = ""
+
+@dataclass
+class Evaluate():
+    pretrain_name = "" 

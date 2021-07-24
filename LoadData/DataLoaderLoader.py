@@ -1,6 +1,7 @@
 import os
 import random
 import math
+import importlib
 
 from torch.utils.data import DataLoader
 
@@ -12,7 +13,9 @@ class DataLoaderLoader():
         self.h_params = h_params
     
     def get_data_set(self,path_list):
-        return DataSet(path_list)
+        module_path = self.h_params.get_import_path_of_module(self.h_params.dataset.root_path, self.h_params.dataset.name)
+        dataset_module= importlib.import_module(module_path)
+        return getattr(dataset_module,self.h_params.dataset.name)(self.h_params,path_list)
     
     def get_data_loader(self):
         train_path_list,valid_path_list,test_path_list = self.get_data_path_list()

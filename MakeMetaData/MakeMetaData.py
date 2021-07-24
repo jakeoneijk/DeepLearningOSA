@@ -4,10 +4,11 @@ from MakeMetaData.SingingVoice.MakeSkMultiSingerMetaData import MakeSkMultiSinge
 from MakeMetaData.SingingVoice.MakeIKalaMetaData import MakeIKalaMetaData
 from MakeMetaData.SingingVoice.MakeMusDBMainVocal import MakeMusDBMainVocal
 
+import os
 class MakeMetaData:
     def __init__(self,h_params:HParams):
         self.h_params = h_params
-
+        os.makedirs(self.h_params.data.root_path,exist_ok=True)
         self.data_mkr_dict = dict()
         self.data_mkr_dict["sk_multi_singer"] = MakeSkMultiSingerMetaData(h_params)
         self.data_mkr_dict["ikala"] = MakeIKalaMetaData(h_params)

@@ -1,5 +1,6 @@
 import os
 import pickle
+import importlib
 
 from HParams import HParams
 from MakeMetaData.MakeMetaData import MakeMetaData
@@ -10,21 +11,39 @@ from LoadData.DataLoaderLoader import DataLoaderLoader
 class Controller():
     def __init__(self):
         self.h_params:HParams = None
+
+        self.model = None
         self.trainer = None
         self.tester = None
-        
+        self.evaluater = None
+
     def set_experiment(self,h_params:HParams = None):
         #set hparams.
         self.h_params = HParams() if h_params is None else h_params
+        os.makedirs(self.h_params.test.output_path,exist_ok=True)
         self.set_experiment_module()
     
     def set_experiment_module(self):
         #set model, trainer and tester
-        self.model = None
+        if self.h_params.mode.app in ["test_model_io", "train", "test"]:
+            module_path = self.h_params.get_import_path_of_module(self.h_params.model.root_path, self.h_params.model.name)
+            model_module= importlib.import_module(module_path)
+            self.model = getattr(model_module,self.h_params.model.name)(self.h_params)
+            
         if self.h_params.mode.app == "train":
-            self.trainer = None
-        elif self.h_params.mode.app == "test":
-            self.tester = None
+            module_path = self.h_params.get_import_path_of_module(self.h_params.train.root_path, self.h_params.train.name)
+            trainer_module= importlib.import_module(module_path)
+            self.trainer = getattr(trainer_module,self.h_params.train.name)(self.model,self.h_params)
+
+        if self.h_params.mode.app == "test":
+            module_path = self.h_params.get_import_path_of_module(self.h_params.test.root_path, self.h_params.test.name)
+            tester_module= importlib.import_module(module_path)
+            self.tester = getattr(tester_module,self.h_params.test.name)(self.model,self.h_params)
+
+        if self.h_params.mode.app == "evaluate":
+            module_path = self.h_params.get_import_path_of_module(self.h_params.evaluate.root_path, self.h_params.evaluate.name)
+            evaluater_module= importlib.import_module(module_path)
+            self.evaluater = getattr(evaluater_module,self.h_params.evaluate.name)(self.h_params)
 
     def run(self):
         print("=============================================")
@@ -83,7 +102,7 @@ class Controller():
             self.tester.test_test_set(data_name)
 
     def evaluate(self):
-        pass
+        self.evaluater.process()
 
 if __name__ == '__main__':
     controller = Controller()

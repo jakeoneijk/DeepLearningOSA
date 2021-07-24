@@ -43,7 +43,8 @@ class Tester(ABC):
     def test_test_set(self,data_name):
         meta_data_list = self.preprocessor.get_train_test_meta_data_list(data_name)
         test_meta_data_list = [meta_data for meta_data in meta_data_list if meta_data["data_type"] == "test" ]
-        for test_meta_data in test_meta_data_list:
+        for i,test_meta_data in enumerate(test_meta_data_list):
+            print(f"{i+1}/{len(test_meta_data_list)} {test_meta_data['name']}")
             self.test_one_sample(test_meta_data,data_name)
 
     def test_one_sample(self,meta_data,data_name):
@@ -117,3 +118,4 @@ class Tester(ABC):
         for i in range(0,numpy_batch.shape[0]):
             unzip_data = numpy_batch[i] if unzip_data is None else np.concatenate((unzip_data,numpy_batch[i]),axis=-1)
         return unzip_data
+    

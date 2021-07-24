@@ -1,5 +1,19 @@
 # base line config
+# data class variable: variable: value
 mode:
   experiment_name: 'base line'
 
-#data class variable: variable: value
+dataset:
+  name: "DataSet"
+
+model:
+  name: ""
+
+train:
+  name: "Trainer"
+
+test:
+  name: "Tester"
+
+evaluate:
+  name: "Evaluater"

@@ -8,14 +8,14 @@ class FeatureSegmentDataSet(dataset.Dataset):
     '''
     segment dim is -1 (last)
     '''
-    def __init__(self, h_params:HParams, data_path_list:list, feature_list:list):
+    def __init__(self, h_params:HParams, data_path_list:list):
         self.batch_size = h_params.train.batch_size
         self.segment_size = h_params.model.segment_size
 
         self.data_set = []
         for data_path in data_path_list:
             feature_dict = dict()
-            for feature_name in feature_list:
+            for feature_name in h_params.dataset.feature_list:
                 feature_dict[feature_name] = self.read_feature_pickle(f"{data_path}/{feature_name}.pkl")
             self.data_set.append(feature_dict)
     

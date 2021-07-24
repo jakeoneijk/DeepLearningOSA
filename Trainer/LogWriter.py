@@ -1,28 +1,20 @@
 import os
 from HParams import HParams
 from torch.utils.tensorboard import SummaryWriter
-import pickle
+import yaml
 
 class LogWriter():
     def __init__(self,h_params:HParams):
         self.h_params = h_params
+        os.makedirs(self.h_params.log.tensorboard_path,exist_ok=True)
         self.log_name = self.h_params.log.log_path + "/log.txt"
         self.tensorboard_writer = SummaryWriter(log_dir=self.h_params.log.tensorboard_path)
         self.h_params_log()
 
     def h_params_log(self):
-        info_file_name = os.path.join(self.h_params.log.log_path,"h_params.txt")
-        file = open(info_file_name,'w')
-
-        for key in self.h_params.__dict__:
-            file.write(key+"\n")
-            for sub_key in self.h_params.__dict__[key].__dict__:
-                file.write("    "+sub_key+": "+str(self.h_params.__dict__[key].__dict__[sub_key])+"\n")
-        file.close()
-
-        h_param_save_path = os.path.join(self.h_params.log.log_path,"h_params.pkl")
-        with open(h_param_save_path,'wb') as file_writer:
-            pickle.dump(self.h_params,file_writer)
+        info_file_name = os.path.join(self.h_params.log.log_path,"h_params.yaml")
+        with open(info_file_name,'w') as file:
+            yaml.dump(self.h_params,file)
 
     def print_and_log(self,log_message,global_step):
         print(log_message)

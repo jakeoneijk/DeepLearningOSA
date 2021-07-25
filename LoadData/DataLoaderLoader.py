@@ -18,7 +18,7 @@ class DataLoaderLoader():
         return getattr(dataset_module,self.h_params.dataset.name)(self.h_params,path_list)
     
     def get_data_loader(self):
-        train_path_list,valid_path_list,test_path_list = self.get_data_path_list()
+        train_path_list,valid_path_list,test_path_list = self.get_data_path_list(self.h_params.dataset.make_valid_set_from_train)
 
         train_data_set = self.get_data_set(train_path_list)
         valid_data_set = self.get_data_set(valid_path_list)
@@ -33,13 +33,13 @@ class DataLoaderLoader():
 
         return train_data_loader,valid_data_loader,test_data_loader
 
-    def get_data_path_list(self):
+    def get_data_path_list(self,make_valid_set_from_train = False):
         total_train_path_list = []
         total_valid_path_list = []
         total_test_path_list = []
         for data_name in self.h_params.data.name_list:
             data_path = os.path.join(self.h_params.data.root_path,data_name+"/"+self.h_params.data.preprocess_data_path) 
-            train_path_list,valid_path_list,test_path_list = self.get_data_path(data_path)
+            train_path_list,valid_path_list,test_path_list = self.get_data_path(data_path,make_valid_set_from_train)
             total_train_path_list = total_train_path_list + train_path_list
             total_valid_path_list = total_valid_path_list + valid_path_list
             total_test_path_list = total_test_path_list + test_path_list
@@ -64,7 +64,7 @@ class DataLoaderLoader():
         num_total_train_data = len(total_train_data_list)
         total_indices = list(range(num_total_train_data))
         random.shuffle(total_indices)
-        num_train_set = math.floor(num_total_train_data * (1-self.h_params.data.valid_ratio))
+        num_train_set = math.floor(num_total_train_data * (1-self.h_params.dataset.valid_ratio))
         train_idx = total_indices[:num_train_set]
         valid_idx = total_indices[num_train_set:]
 

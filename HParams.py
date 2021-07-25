@@ -76,7 +76,6 @@ class Resource:
 
 @dataclass
 class Data:
-    valid_ratio:int = 0.1
     original_data_path:str = "../210101_data"
     root_path:str = "./Data"
     name_list = []
@@ -91,6 +90,8 @@ class PreProcess:
 @dataclass
 class DataSet:
     root_path:str = "./LoadData"
+    make_valid_set_from_train:bool = False
+    valid_ratio:float = 0.1
 
 @dataclass
 class Model:

@@ -245,7 +245,7 @@ class Trainer(ABC):
             'best_metric': self.best_valid_metric,
             'best_model_epoch' :  self.best_valid_epoch,
         }
-        path = os.path.join(self.h_params.log.model_save_path,f'{self.model.__class__.__name__}_checkpoint{prefix}.pth')
+        path = os.path.join(self.h_params.log.root_path,f'{self.model.__class__.__name__}_checkpoint{prefix}.pth')
         torch.save(train_state,path)
 
     def resume(self,filename:str):

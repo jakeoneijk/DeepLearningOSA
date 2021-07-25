@@ -10,7 +10,7 @@ class FeatureSegmentDataSet(dataset.Dataset):
     '''
     def __init__(self, h_params:HParams, data_path_list:list):
         self.batch_size = h_params.train.batch_size
-        self.segment_size = h_params.model.segment_size
+        self.segment_size = h_params.dataset.segment_size
 
         self.data_set = []
         for data_path in data_path_list:

@@ -65,7 +65,7 @@ class HParams(object):
 @dataclass
 class Mode:
     config_path:str = "./Config/baseline.yaml"
-    app:str = ["make_meta_data", "preprocess", "test_model_io", "train", "test", "evaluate"][0]
+    app:str = {0:"make_meta_data", 1:"preprocess", 2:"test_model_io", 3:"train", 4:"test", 5:"evaluate"}[0]
     train:str = ["start","resume"][0]
     debug_mode:bool = False
 
@@ -129,6 +129,7 @@ class Test():
     output_path = "./TestOutput"
     pretrain_path = "./Pretrained"
     pretrain_dir_name = ""
+    pretrain_module_name="pretrained_"
 
 @dataclass
 class Evaluate():

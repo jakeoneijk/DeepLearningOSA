@@ -12,8 +12,7 @@ class Tester(ABC):
         self.h_params:HParams = h_params
         self.device = h_params.resource.device
         self.model = model
-        self.pretrained_load(os.path.join(self.h_params.test.pretrain_path,self.h_params.test.pretrain_dir_name)+"/model_load.pth")
-        
+        self.pretrained_load(f"{self.h_params.test.pretrain_path}/{self.h_params.test.pretrain_dir_name}/{self.h_params.test.pretrain_module_name}.pth")
         self.preprocessor = PreProcess(h_params)
         self.time_log = datetime.now().strftime('%y%m%d-%H%M%S')
     
@@ -50,7 +49,7 @@ class Tester(ABC):
     def test_one_sample(self,meta_data,data_name):
         self.set_output_path(meta_data=meta_data)
         test_data = self.read_test_data(meta_data,data_name)
-        batch_input = self.make_batch(test_data["model_input"],test_data["seg_dim_size"],self.h_params.model.segment_size)
+        batch_input = self.make_batch(test_data["model_input"],test_data["seg_dim_size"],self.h_params.dataset.segment_size)
         output = self.make_output(batch_input)
         self.post_processing(output,test_data)
 
@@ -62,13 +61,12 @@ class Tester(ABC):
     def set_output_path(self,meta_data):
         dataname = meta_data['name']
         model_info = self.h_params.test.pretrain_dir_name
-
-        self.output_path = self.h_params.test.output_path
-        output_path_list = [model_info, dataname]
-
-        for output_path_dir in output_path_list:
-            self.output_path = self.output_path + "/" + output_path_dir
-            os.makedirs(self.output_path,exist_ok=True)
+        model_load_info = self.h_params.test.pretrain_module_name
+        
+        self.output_path = f"{self.h_params.test.output_path}/{model_info}({model_load_info})/{dataname}"
+        
+        os.makedirs(self.output_path,exist_ok=True)
+            
 
     def make_batch(self,input:dict,segment_dim_size:int, segment_size:int):
         batch_data = dict()

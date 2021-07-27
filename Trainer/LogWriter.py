@@ -14,7 +14,7 @@ class LogWriter():
     def h_params_log(self):
         info_file_name = os.path.join(self.h_params.log.log_path,"h_params.yaml")
         with open(info_file_name,'w') as file:
-            yaml.dump(self.h_params,file)
+            yaml.dump(self.h_params.get_h_params_dict(),file)
 
     def print_and_log(self,log_message,global_step):
         print(log_message)
